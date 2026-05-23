@@ -1,0 +1,3 @@
+[submodule "forth"]
+	path = forth
+	url = git@github.com:Acedio/snes-forth.git
