@@ -1,6 +1,6 @@
 # snes-forth
 
-![A screenshot of snes-forth, showing text output.](screenshot.png)
+![A screenshot of super-sokonyan's title screen.](screenshot.png)
 
 A color-merging sokoban for the SNES! Written in Forth! There's a cat!
 
