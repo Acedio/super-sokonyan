@@ -3,6 +3,7 @@
 .a16
 
 .segment "HEADERNAME"
+; TODO: Make this configurable somehow?
   .byte "SUPER SOKONYAN"
 
 .segment "ROMINFO"

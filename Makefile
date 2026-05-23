@@ -6,9 +6,9 @@ all: $(BUILD)/game.smc $(BUILD)/game.mlb
 build:
 	mkdir -p build
 
-$(BUILD)/%.smc $(BUILD)/%.labels $(BUILD)/%.dbg: $(BUILD)/%.o $(BUILD)/init.o lorom128.cfg $(BUILD)/tad-audio.o $(BUILD)/audio.o | build
+$(BUILD)/%.smc $(BUILD)/%.labels $(BUILD)/%.dbg: $(BUILD)/%.o $(BUILD)/init.o forth/lorom128.cfg $(BUILD)/tad-audio.o $(BUILD)/audio.o | build
 # audio.o should come first to ensure that it gets precedence in its bank.
-	ld65 -C lorom128.cfg -Ln $(BUILD)/$*.labels --dbgfile $(BUILD)/$*.dbg -o $(BUILD)/$*.smc $(BUILD)/audio.o $(BUILD)/$*.o $(BUILD)/init.o $(BUILD)/tad-audio.o
+	ld65 -C forth/lorom128.cfg -Ln $(BUILD)/$*.labels --dbgfile $(BUILD)/$*.dbg -o $(BUILD)/$*.smc $(BUILD)/audio.o $(BUILD)/$*.o $(BUILD)/init.o $(BUILD)/tad-audio.o
 
 $(BUILD)/tad-audio.o: tad-audio.s | build
 	ca65 $< -g -o $@ -DLOROM
@@ -19,7 +19,8 @@ $(BUILD)/audio.o: $(BUILD)/audio.s | build
 $(BUILD)/%.o: $(BUILD)/%.out.s $(BUILD)/preamble.inc | build
 	ca65 $< -g -o $@
 
-$(BUILD)/init.o: init.s $(BUILD)/preamble.inc | build
+# TODO: I feel like this should be handled entirely within the forth/Makefile.
+$(BUILD)/init.o: forth/init.s $(BUILD)/preamble.inc | build
 	ca65 $< -g -o $@
 
 # A list of labels for use with Mesen.
@@ -30,7 +31,7 @@ $(BUILD)/%.mlb: $(BUILD)/%.labels | build
 $(BUILD)/%.out.s: %.fth forth/snes-forth.lua | build
 	LUA_PATH=forth/?.lua forth/snes-forth.lua $< $@
 
-$(BUILD)/%.out.s: tests/%.fth forth/snes-forth.lua std.fth snes-std.fth tests/test-util.fth tests/snes-test-util.fth cgram.fth oam.fth vram.fth | build 
+$(BUILD)/%.out.s: tests/%.fth forth/snes-forth.lua tests/test-util.fth tests/snes-test-util.fth cgram.fth oam.fth vram.fth | build 
 	LUA_PATH=forth/?.lua forth/snes-forth.lua $< $@
 
 forth/snes-forth.lua: forth/bytestack.lua  forth/cellstack.lua  forth/dataspace.lua  forth/dictionary.lua  forth/input.lua
@@ -42,8 +43,9 @@ forth/snes-forth.lua: forth/bytestack.lua  forth/cellstack.lua  forth/dataspace.
 MAPS=starfield.p2 farstars.p1 title.p1
 MAPS_FTH=$(foreach name,$(MAPS),$(BUILD)/$(name).map.fth)
 
-game.fth: std.fth snes-std.fth joypad.fth sin-lut.fth oam.fth vram.fth cgram.fth wram.fth $(4BTILES_FTH) $(2BTILES_FTH) $(MAPS_FTH) font.fth audio.fth stars.fth steps.fth level-data.fth levels.fth level.fth title.fth end.fth
+game.fth: joypad.fth sin-lut.fth oam.fth vram.fth cgram.fth wram.fth $(4BTILES_FTH) $(2BTILES_FTH) $(MAPS_FTH) font.fth audio.fth stars.fth steps.fth level-data.fth levels.fth level.fth title.fth end.fth
 
+# TODO: Currently unused, the game itself doesn't have any tests.
 tests: $(BUILD)/tests.smc $(BUILD)/tests.mlb
 
 $(ASSETS)/farstars.png: $(ASSETS)/stars.png
@@ -59,7 +61,7 @@ $(BUILD)/audio.inc: $(ASSETS)/audio.terrificaudio | build
 
 audio.fth: $(BUILD)/tad-audio.inc $(BUILD)/audio.inc
 
-JUSTCOPY=tad-audio.inc preamble.inc
+JUSTCOPY=tad-audio.inc forth/preamble.inc
 $(foreach file,$(JUSTCOPY),$(BUILD)/$(file)): $(JUSTCOPY)
 	cp $(JUSTCOPY) $(BUILD)
 
