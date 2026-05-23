@@ -8,9 +8,9 @@ Created as a part of [SNESDEV 2025](https://itch.io/jam/snesdev-2025).
 
 ## Controls
 
-*D-Pad* - Move
-*Start* - Restart level
-*A* - Meow
+- *D-Pad* - Move
+- *Start* - Restart level
+- *A* - Meow
 
 You can also skip a level by pressing *Start* while holding *Select*. But you
 don't need to skip any levels, do you? ;)
