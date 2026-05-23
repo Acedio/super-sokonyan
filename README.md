@@ -2,12 +2,9 @@
 
 ![A screenshot of snes-forth, showing text output.](screenshot.png)
 
-A Forth for the SNES's 65816, as well as a simple Sokoban-style game written
-with it :)
+A color-merging sokoban for the SNES! Written in Forth! There's a cat!
 
-I've written up some details on the development of the Forth cross-compiler
-[here](https://acedio.itch.io/super-sokonyan/devlog/1026430/writing-a-forth-for-the-sness-65816),
-for those interested!
+Created as a part of [SNESDEV 2025](https://itch.io/jam/snesdev-2025).
 
 ## Controls
 
@@ -17,6 +14,13 @@ for those interested!
 
 You can also skip a level by pressing *Start* while holding *Select*. But you
 don't need to skip any levels, do you? ;)
+
+## Forth
+
+The majority of the jam was spent writing
+[`snes-forth`](https://github.com/Acedio/snes-forth), which was then used to
+write this game. Please check out the repo if you're interested in more details
+or trying it out yourself :)
 
 ## Credits
 
