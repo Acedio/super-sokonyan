@@ -1,5 +1,6 @@
 BUILD=build
 ASSETS=assets
+SNESFORTH=LUA_PATH=forth/?.lua forth/snes-forth.lua -i forth/include
 
 all: $(BUILD)/game.smc $(BUILD)/game.mlb
 
@@ -29,12 +30,10 @@ $(BUILD)/%.mlb: $(BUILD)/%.labels | build
 
 .PRECIOUS: $(BUILD)/%.out.s
 $(BUILD)/%.out.s: %.fth forth/snes-forth.lua | build
-	LUA_PATH=forth/?.lua forth/snes-forth.lua $< $@
+	$(SNESFORTH) $< $@
 
 $(BUILD)/%.out.s: tests/%.fth forth/snes-forth.lua tests/test-util.fth tests/snes-test-util.fth cgram.fth oam.fth vram.fth | build 
-	LUA_PATH=forth/?.lua forth/snes-forth.lua $< $@
-
-forth/snes-forth.lua: forth/bytestack.lua  forth/cellstack.lua  forth/dataspace.lua  forth/dictionary.lua  forth/input.lua
+	$(SNESFORTH) $< $@
 
 4BTILES=maptiles sprites stars title
 4BTILES_FTH=$(foreach name,$(4BTILES),$(BUILD)/$(name).tiles.fth)
