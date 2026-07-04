@@ -9,7 +9,7 @@ build:
 
 $(BUILD)/%.smc $(BUILD)/%.labels $(BUILD)/%.dbg: $(BUILD)/%.o $(BUILD)/init.o forth/lorom128.cfg $(BUILD)/tad-audio.o $(BUILD)/audio.o | build
 # audio.o should come first to ensure that it gets precedence in its bank.
-	ld65 -C forth/lorom128.cfg -Ln $(BUILD)/$*.labels --dbgfile $(BUILD)/$*.dbg -o $(BUILD)/$*.smc $(BUILD)/audio.o $(BUILD)/$*.o $(BUILD)/init.o $(BUILD)/tad-audio.o
+	ld65 -m link.mapfile -C forth/lorom128.cfg -Ln $(BUILD)/$*.labels --dbgfile $(BUILD)/$*.dbg -o $(BUILD)/$*.smc $(BUILD)/audio.o $(BUILD)/$*.o $(BUILD)/init.o $(BUILD)/tad-audio.o
 
 $(BUILD)/tad-audio.o: tad-audio.s | build
 	ca65 $< -g -o $@ -DLOROM
