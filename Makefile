@@ -29,10 +29,10 @@ $(BUILD)/%.mlb: $(BUILD)/%.labels | build
 	< $< awk 'BEGIN {IFS=" "} {printf("SnesPrgRom:%x:%s\n", strtonum("0x" $$2) - 0x8000, substr($$3,2));}' > $@
 
 .PRECIOUS: $(BUILD)/%.out.s
-$(BUILD)/%.out.s: %.fth forth/snes-forth.lua | build
+$(BUILD)/%.out.s: %.fth | build
 	$(SNESFORTH) $< $@
 
-$(BUILD)/%.out.s: tests/%.fth forth/snes-forth.lua tests/test-util.fth tests/snes-test-util.fth cgram.fth oam.fth vram.fth | build 
+$(BUILD)/%.out.s: tests/%.fth tests/test-util.fth tests/snes-test-util.fth cgram.fth oam.fth vram.fth | build 
 	$(SNESFORTH) $< $@
 
 4BTILES=maptiles sprites stars title
@@ -42,7 +42,7 @@ $(BUILD)/%.out.s: tests/%.fth forth/snes-forth.lua tests/test-util.fth tests/sne
 MAPS=starfield.p2 farstars.p1 title.p1
 MAPS_FTH=$(foreach name,$(MAPS),$(BUILD)/$(name).map.fth)
 
-game.fth: joypad.fth sin-lut.fth oam.fth vram.fth cgram.fth wram.fth $(4BTILES_FTH) $(2BTILES_FTH) $(MAPS_FTH) font.fth audio.fth stars.fth steps.fth level-data.fth levels.fth level.fth title.fth end.fth
+$(BUILD)/game.out.s: joypad.fth sin-lut.fth oam.fth vram.fth cgram.fth wram.fth $(4BTILES_FTH) $(2BTILES_FTH) $(MAPS_FTH) font.fth audio.fth stars.fth steps.fth level-data.fth levels.fth level.fth title.fth end.fth
 
 # TODO: Currently unused, the game itself doesn't have any tests.
 tests: $(BUILD)/tests.smc $(BUILD)/tests.mlb
