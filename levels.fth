@@ -2,6 +2,11 @@ REQUIRE std.fth
 
 REQUIRE level-data.fth
 
+3 CONSTANT LEVEL-DATA-BANK
+
+BANK@
+LEVEL-DATA-BANK BANK!
+
 0 CONSTANT INITIAL-LEVEL
 
 (
@@ -423,6 +428,8 @@ HERE
 LEVEL-DATA,
 CONSTANT LEVEL-FINAL-DATA
 
+BANK! \ Go back to the original bank.
+
 0 \ Track the number of levels.
 CREATE LEVELS-ARRAY
   LEVEL-1-DATA , 1+
@@ -439,6 +446,9 @@ CONSTANT NUM-LEVELS
 
 ( level-id -- )
 : LOAD-LEVEL
-  CELLS LEVELS-ARRAY + @ 0x80 LEVEL-DATA@
+  \ Pull from bank 0x8X for faster ROM access.
+  CELLS LEVELS-ARRAY + @
+  0x80 LEVEL-DATA-BANK +
+  LEVEL-DATA@
 ;
 
