@@ -1,4 +1,4 @@
-# snes-forth
+# Super Sokonyan
 
 ![A screenshot of super-sokonyan's title screen.](screenshot.png)
 
